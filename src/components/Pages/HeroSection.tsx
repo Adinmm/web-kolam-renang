@@ -58,7 +58,7 @@ const HeroSection = () => {
             className="text-4xl md:text-5xl lg:text-7xl font-display font-bold text-primary-foreground mb-6 leading-tight animate-fade-in"
             style={{ animationDelay: "0.1s" }}
           >
-            AquaSwim Club
+            Sonic Swim Club
           </h1>
 
           {/* Tagline */}
