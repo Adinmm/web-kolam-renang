@@ -58,7 +58,7 @@ const Navbar = () => {
             <span className={`text-xl font-display font-bold transition-colors duration-300 ${
               isScrolled ? 'text-foreground' : 'text-primary-foreground'
             }`}>
-              AquaSwim Club
+              Sonic Swim Club
             </span>
           </a>
 

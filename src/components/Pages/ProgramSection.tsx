@@ -15,53 +15,10 @@ import {
   Clock,
   DollarSign,
 } from "lucide-react";
+import { useGetClasses } from "@/hooks/useGet";
+import { useEffect } from "react";
+import { formatRupiah } from "@/lib/formatRupiah";
 
-const programs = [
-  {
-    id: "pemula",
-    title: "Kelas Pemula",
-    description:
-      "Program khusus untuk yang baru belajar berenang. Fokus pada pengenalan air, teknik dasar pernapasan, dan gaya bebas.",
-    icon: Users,
-    schedule: "Senin - Jumat, 08:00 - 10:00",
-    price: "Rp 500.000/bulan",
-    features: ["Pengenalan air", "Teknik pernapasan", "Gaya bebas dasar"],
-    color: "from-accent/20 to-accent/5",
-  },
-  {
-    id: "anak",
-    title: "Kelas Anak",
-    description:
-      "Dirancang khusus untuk anak usia 5-12 tahun dengan metode bermain sambil belajar yang menyenangkan.",
-    icon: Baby,
-    schedule: "Sabtu - Minggu, 08:00 - 11:00",
-    price: "Rp 600.000/bulan",
-    features: ["Metode fun learning", "Keamanan air", "4 gaya renang"],
-    color: "from-primary/20 to-primary/5",
-  },
-  {
-    id: "dewasa",
-    title: "Kelas Dewasa",
-    description:
-      "Program untuk dewasa yang ingin belajar atau meningkatkan teknik renang. Jadwal fleksibel sesuai kebutuhan.",
-    icon: UserCheck,
-    schedule: "Senin - Jumat, 17:00 - 20:00",
-    price: "Rp 700.000/bulan",
-    features: ["Jadwal fleksibel", "Private & group", "Semua level"],
-    color: "from-secondary-foreground/10 to-secondary-foreground/5",
-  },
-  {
-    id: "prestasi",
-    title: "Kelas Prestasi",
-    description:
-      "Untuk atlet yang ingin berprestasi di kompetisi renang. Latihan intensif dengan pelatih profesional.",
-    icon: Trophy,
-    schedule: "Setiap hari, 05:00 - 07:00 & 15:00 - 17:00",
-    price: "Rp 1.500.000/bulan",
-    features: ["Latihan intensif", "Persiapan kompetisi", "Analisis video"],
-    color: "from-accent/20 to-accent/5",
-  },
-];
 
 const ProgramsSection = () => {
   const scrollToRegistration = () => {
@@ -71,6 +28,7 @@ const ProgramsSection = () => {
     }
   };
 
+  const { classes } = useGetClasses();
   return (
     <section id="program" className="py-20 lg:py-32 bg-secondary/30">
       <div className="container mx-auto px-4">
@@ -90,7 +48,7 @@ const ProgramsSection = () => {
 
         {/* Programs Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {programs.map((program, index) => (
+          {classes?.data?.data?.map((program, index) => (
             <Card
               key={program.id}
               hover
@@ -98,13 +56,13 @@ const ProgramsSection = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Gradient Top */}
-              <div className={`h-2 bg-linear-to-r ${program.color}`} />
+              <div className={`h-2 bg-linear-to-r from-accent/20 to-accent/5`} />
 
               <CardHeader className="pb-4">
                 <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <program.icon className="w-7 h-7 text-primary" />
+                  <Users className="w-7 h-7 text-primary" />
                 </div>
-                <CardTitle className="text-xl">{program.title}</CardTitle>
+                <CardTitle className="text-xl">{program.class_name}</CardTitle>
                 <CardDescription className="text-sm leading-relaxed">
                   {program.description}
                 </CardDescription>
@@ -123,13 +81,13 @@ const ProgramsSection = () => {
                 <div className="flex items-center gap-3">
                   <DollarSign className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="text-sm font-semibold text-foreground">
-                    {program.price}
+                    {formatRupiah(program.price)}
                   </span>
                 </div>
 
                 {/* Features */}
                 <ul className="space-y-2 pt-2">
-                  {program.features.map((feature) => (
+                  {program.class_items.map((feature) => (
                     <li
                       key={feature}
                       className="flex items-center gap-2 text-sm text-muted-foreground"

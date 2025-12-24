@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckCircle, Loader2 } from "lucide-react";
 import {
   Card,
@@ -17,17 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-
-const kelasOptions = [
-  { value: "pemula", label: "Kelas Pemula" },
-  { value: "anak", label: "Kelas Anak (5-12 tahun)" },
-  { value: "dewasa", label: "Kelas Dewasa" },
-  { value: "prestasi", label: "Kelas Prestasi" },
-];
+import { useGetClasses, useGetContactInformation } from "@/hooks/useGet";
+import { convertPhone } from "@/lib/convertPhone";
 
 const RegistrationSection = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [formData, setFormData] = useState({
     nama: "",
     umur: "",
@@ -36,9 +29,17 @@ const RegistrationSection = () => {
     kelas: "",
   });
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const { query } = useGetContactInformation();
+  const { classes } = useGetClasses();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const phoneNumber = "6285171043945";
+    const phoneNumber = convertPhone(query.data?.data?.phone || "");
     const message = `
 Halo Admin, saya ingin mendaftar.
 
@@ -55,12 +56,6 @@ Kelas: ${formData.kelas}
 
     window.open(url, "_blank"); // buka tab baru
   };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
   return (
     <section id="pendaftaran" className="py-20 lg:py-32 bg-background">
       <div className="container mx-auto px-4">
@@ -168,29 +163,17 @@ Kelas: ${formData.kelas}
                       <SelectValue placeholder="Pilih kelas yang diinginkan" />
                     </SelectTrigger>
                     <SelectContent>
-                      {kelasOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
+                      {classes?.data?.data?.map((option, index) => (
+                        <SelectItem key={index} value={option.class_name}>
+                          {option.class_name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                <Button
-                  type="submit"
-                  variant="hero"
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                      Mengirim...
-                    </>
-                  ) : (
-                    "Daftar Sekarang"
-                  )}
+                <Button type="submit" variant="hero" className="w-full">
+                  Daftar Sekarang
                 </Button>
               </form>
             </CardContent>
