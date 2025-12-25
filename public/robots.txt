@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Blok halaman yang tidak perlu di-index
+Disallow: /admin/
+Disallow: /login/
+Disallow: /dashboard/
+Disallow: /api/
+
+# Lokasi sitemap
+Sitemap: https://sonic-swim.netlify.app/sitemap.xml

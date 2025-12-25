@@ -23,35 +23,69 @@ export const metadata: Metadata = {
   },
   description:
     "Klub renang profesional di Deli Serdang & Medan. Melayani les renang anak dan dewasa dengan pelatih bersertifikat di Kenangan, Percut Sei Tuan.",
+
   keywords: [
+    "kursus renang Deli Serdang",
+    "les renang Medan",
+    "kursus renang anak",
+    "les renang dewasa",
     "Sonic Swim Club",
-    "Kursus Renang Deli Serdang",
-    "Les Renang Medan",
-    "Sonic SC",
-    "Renang Percut Sei Tuan",
   ],
+
   authors: [{ name: "Sonic Swim Club" }],
-  metadataBase: new URL("https://sonic-swim.netlify.app"), // Ganti dengan domain asli nanti
+  creator: "Sonic Swim Club",
+  publisher: "Sonic Swim Club",
+
+  metadataBase: new URL("https://sonic-swim.netlify.app"),
+
   alternates: {
     canonical: "/",
   },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
   openGraph: {
-    title: "Sonic Swim Club - Pelatih Renang Profesional",
-    description: "Program renang terbaik untuk semua usia di Deli Serdang.",
+    title: "Sonic Swim Club - Kursus Renang Profesional",
+    description:
+      "Program les renang anak dan dewasa di Deli Serdang dengan pelatih profesional.",
     url: "https://sonic-swim.netlify.app",
     siteName: "Sonic Swim Club",
     locale: "id_ID",
     type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Sonic Swim Club Deli Serdang",
+      },
+    ],
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Sonic Swim Club",
-    description: "Kursus renang profesional di Deli Serdang & Medan.",
+    title: "Sonic Swim Club - Kursus Renang",
+    description:
+      "Les renang profesional untuk anak dan dewasa di Deli Serdang & Medan.",
+    images: ["/og-image.jpg"],
   },
+
   icons: {
-    icon: "/icon.svg", // Pastikan file ada di folder public
+    icon: "/icon.svg",
     apple: "/apple-touch-icon.png",
   },
+
+  category: "sports",
 };
 
 export default function RootLayout({
