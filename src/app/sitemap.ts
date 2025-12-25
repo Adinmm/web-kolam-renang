@@ -1,7 +1,10 @@
 import { MetadataRoute } from 'next'
- 
+
+export const dynamic = 'force-static'
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://sonic-swim.netlify.app' // Ganti dengan domain Anda
+  const baseUrl = 'https://sonic-swim.netlify.app'
+
   return [
     {
       url: baseUrl,
@@ -9,6 +12,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 1,
     },
-    // Jika nanti ada halaman /programs atau /contact, tambahkan di sini
   ]
 }
