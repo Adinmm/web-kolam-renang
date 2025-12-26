@@ -15,7 +15,7 @@ const AboutSection = () => {
               Lebih dari Sekedar Klub Renang
             </h2>
             <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-              Sejak 2014, Sonic Swim Club telah menjadi rumah bagi ratusan perenang dari berbagai usia dan tingkat kemampuan.
+              Sejak 2014, Sonic Swimming Club telah menjadi rumah bagi ratusan perenang dari berbagai usia dan tingkat kemampuan.
             </p>
           </div>
 
@@ -26,7 +26,7 @@ const AboutSection = () => {
                 Profil Klub
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Sonic Swim Club didirikan dengan visi untuk menghadirkan pembelajaran renang berkualitas tinggi 
+                Sonic Swimming Club didirikan dengan visi untuk menghadirkan pembelajaran renang berkualitas tinggi 
                 yang dapat diakses oleh semua kalangan. Dengan fasilitas kolam renang berstandar internasional 
                 dan tim pelatih bersertifikat nasional, kami berkomitmen untuk mengembangkan kemampuan renang 
                 setiap siswa secara optimal.

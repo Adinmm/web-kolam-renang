@@ -5,11 +5,12 @@ import {
   Waves,
   Facebook,
   Instagram,
-  Twitter,
   Mail,
   Phone,
   MapPin,
+  Youtube,
 } from "lucide-react";
+import { FaFacebook, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -25,7 +26,7 @@ const Footer = () => {
             <div className="flex items-center gap-2 mb-4">
               <Waves className="w-8 h-8 text-accent" />
               <span className="text-xl font-display font-bold">
-                Sonic Swim Club
+                Sonic Swimming Club
               </span>
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed mb-6">
@@ -34,25 +35,40 @@ const Footer = () => {
             </p>
             <div className="flex gap-3">
               <a
-                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.facebook.com/share/1FRWdCtRXV/"
                 className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-accent transition-colors"
                 aria-label="Facebook"
               >
-                <Facebook className="w-5 h-5" />
+                <FaFacebook className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/sonicswimmingclubmedan?igsh=MXVmdXd4d2UyNnAwZA=="
                 className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-accent transition-colors"
                 aria-label="Instagram"
               >
-                <Instagram className="w-5 h-5" />
+                <FaInstagram className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://youtube.com/@sonicswimmingclubmedan?si=Q6j68pdgPLs0o3ng"
                 className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-accent transition-colors"
-                aria-label="Twitter"
+                aria-label="Instagram"
               >
-                <Twitter className="w-5 h-5" />
+                <FaYoutube className="w-5 h-5" />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.tiktok.com/@sonic_swimming_club?_r=1&_t=ZS-92VrVtLk0qf"
+                className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-accent transition-colors"
+                aria-label="Instagram"
+              >
+                <FaTiktok className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -138,7 +154,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-primary-foreground/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-primary-foreground/60 text-sm">
-            © {currentYear} Sonic Swim Club. Hak cipta dilindungi.
+            © {currentYear} Sonic Swimming Club. Hak cipta dilindungi.
           </p>
           <div className="flex gap-6">
             <a

@@ -51,7 +51,7 @@ const GallerySection = () => {
             Momen Berharga Kami
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Dokumentasi kegiatan dan fasilitas Sonic Swim Club
+            Dokumentasi kegiatan dan fasilitas Sonic Swimming Club
           </p>
         </div>
 

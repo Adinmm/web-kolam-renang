@@ -58,7 +58,7 @@ const HeroSection = () => {
             className="text-4xl md:text-5xl lg:text-7xl font-display font-bold text-primary-foreground mb-6 leading-tight animate-fade-in"
             style={{ animationDelay: "0.1s" }}
           >
-            Sonic Swim Club
+            Sonic Swimming Club
           </h1>
 
           {/* Tagline */}
@@ -100,7 +100,7 @@ const HeroSection = () => {
             {[
               { value: "150+", label: "Siswa Aktif" },
               { value: "15+", label: "Pelatih Profesional" },
-              { value: "5", label: "Tahun Pengalaman" },
+              { value: "5+", label: "Tahun Pengalaman" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-3xl md:text-4xl font-display font-bold text-primary-foreground mb-1">

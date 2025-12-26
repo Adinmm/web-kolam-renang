@@ -8,4 +8,4 @@ Disallow: /dashboard/
 Disallow: /api/
 
 # Lokasi sitemap
-Sitemap: https://sonic-swim.netlify.app/sitemap.xml
+Sitemap: https://www.sonicswimmingclub.online/sitemap.xml

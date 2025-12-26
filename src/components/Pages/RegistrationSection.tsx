@@ -71,7 +71,7 @@ Kelas: ${formData.kelas}
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed">
               Isi formulir pendaftaran di samping untuk memulai perjalanan
-              renang Anda bersama AquaSwim Club. Tim kami akan menghubungi Anda
+              renang Anda bersama Sonic Swimming Club. Tim kami akan menghubungi Anda
               untuk konfirmasi dan jadwal trial gratis.
             </p>
 

@@ -10,7 +10,7 @@ const ContactSection = () => {
   const { query } = useGetContactInformation();
   const whatsappNumber = convertPhone(query.data?.data?.phone ||"")
   const whatsappMessage = encodeURIComponent(
-    "Halo, saya tertarik untuk mendaftar di Sonic Swim Club. Bisa dibantu?"
+    "Halo, saya tertarik untuk mendaftar di Sonic Swimming Club. Bisa dibantu?"
   );
 
   return (
@@ -139,7 +139,7 @@ const ContactSection = () => {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Lokasi Sonic Swim Club"
+                  title="Lokasi Sonic Swimming Club"
                   className="grayscale hover:grayscale-0 transition-all duration-500"
                 />
               </Card>
