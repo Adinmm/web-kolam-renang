@@ -8,21 +8,38 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Users, BookOpen, Phone, Loader2 } from "lucide-react";
+import {
+  Trash2,
+  Users,
+  BookOpen,
+  Phone,
+  Loader2,
+  Images,
+  ImageIcon,
+} from "lucide-react";
 import { useUpdateContactInformation, useUpdateUser } from "@/hooks/usePatch";
 import {
   useGetClasses,
   useGetContactInformation,
   useGetUser,
 } from "@/hooks/useGet";
-import { ClassModel, ContactInformationModel } from "@/schemas/app.schema";
-import { useCreateClass } from "@/hooks/usePost";
+import {
+  ClassModel,
+  ContactInformationModel,
+  ImageModel,
+} from "@/schemas/app.schema";
+import {
+  useCreateClass,
+  useUploadImage,
+  useUploadImageUrl,
+} from "@/hooks/usePost";
 import { useDeleteClass } from "@/hooks/useDelete";
 import { Alert } from "../others/Alert";
 import { formatRupiah } from "@/lib/formatRupiah";
 
 export default function DashboardPage() {
   const [idContact, setIdContact] = useState("");
+  const [image, setImage] = useState<File>(new File([], ""));
 
   const idUser = "6c65e7fb-2e4f-4270-a31f-255c8f6cac33";
 
@@ -38,6 +55,28 @@ export default function DashboardPage() {
   // user query
   const { user } = useGetUser(idUser);
   const { form: formUser, mutation: mutationUser } = useUpdateUser(idUser);
+
+  // gallery query
+  const { uploadMutation } = useUploadImage();
+  const { imageForm, imageMutation } = useUploadImageUrl();
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+    }
+  };
+
+  const uploadImageHandler = async (data: ImageModel) => {
+    const upload = await uploadMutation.mutateAsync(image);
+    const dataSending = {
+      url: upload?.data?.image_url,
+      image_public_id: upload?.data?.public_id,
+      category: data?.category,
+      description: data?.description,
+    };
+    await imageMutation.mutateAsync(dataSending);
+  };
 
   const inputArray = (data: string) => {
     const result = data.split(",").map((item) => item.trim());
@@ -94,6 +133,46 @@ export default function DashboardPage() {
     updateUser(user?.data?.data);
   }, [query.data, user.data]);
 
+  const galeryDummy = [
+    {
+      id: "1",
+      image_url: "https://images.unsplash.com/photo-1521412644187-c49fa049e84d",
+      category: "Latihan",
+      description:
+        "Sesi latihan rutin untuk meningkatkan teknik dan stamina renang.",
+      created_at: "2025-01-10",
+    },
+    {
+      id: "2",
+      image_url: "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf",
+      category: "Event",
+      description:
+        "Kejuaraan renang tingkat regional dengan atlet-atlet terbaik.",
+      created_at: "2025-01-15",
+    },
+    {
+      id: "3",
+      image_url: "https://images.unsplash.com/photo-1509223197845-458d87318791",
+      category: "Prestasi",
+      description: "Atlet berhasil meraih medali emas pada ajang nasional.",
+      created_at: "2025-01-20",
+    },
+    {
+      id: "4",
+      image_url: "https://images.unsplash.com/photo-1546484959-fd96d8e52c06",
+      category: "Latihan",
+      description: "Latihan teknik start dan turn untuk perenang pemula.",
+      created_at: "2025-01-25",
+    },
+    {
+      id: "5",
+      image_url: "https://images.unsplash.com/photo-1526676034484-07f3e94b8f8c",
+      category: "Event",
+      description: "Fun swimming dan gathering bersama orang tua atlet.",
+      created_at: "2025-02-01",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -108,7 +187,7 @@ export default function DashboardPage() {
         </div>
         {/* Main Tabs */}
         <Tabs defaultValue="user" className="w-full">
-          <TabsList className="grid grid-cols-3 w-full mb-6 bg-white border shadow-sm">
+          <TabsList className="grid grid-cols-4 w-full mb-6 bg-white border shadow-sm">
             <TabsTrigger
               value="user"
               className="data-[state=active]:bg-blue-500 data-[state=active]:text-white"
@@ -129,6 +208,13 @@ export default function DashboardPage() {
             >
               <Phone className="w-4 h-4 mr-2" />
               Kontak
+            </TabsTrigger>
+            <TabsTrigger
+              value="galery"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white"
+            >
+              <Images className="w-4 h-4 mr-2" />
+              Galeri
             </TabsTrigger>
           </TabsList>
 
@@ -180,7 +266,9 @@ export default function DashboardPage() {
                         type="submit"
                         className="bg-blue-600 hover:bg-blue-700"
                       >
-                        {mutationUser.isPending && <Loader2 className="animate-spin" />}
+                        {mutationUser.isPending && (
+                          <Loader2 className="animate-spin" />
+                        )}
                         Update User
                       </Button>
                     </div>
@@ -448,6 +536,100 @@ export default function DashboardPage() {
                     </div>
                   </CardContent>
                 </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* ================= Galeri TAB ================= */}
+          <TabsContent value="galery">
+            <Card className="shadow-lg border-0">
+              <CardHeader className="bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
+                <CardTitle className="flex items-center gap-2">
+                  <ImageIcon className="w-5 h-5" />
+                  Manajemen Galeri
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent className="p-6 space-y-6">
+                {/* Form Upload Galeri */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <h3 className="font-semibold mb-4 text-gray-700">
+                    Upload Galeri
+                  </h3>
+                  <form onSubmit={imageForm.handleSubmit(uploadImageHandler)}>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Upload File */}
+                      <div>
+                        <Label className="text-gray-700">Gambar</Label>
+                        <Input
+                          onChange={handleImageChange}
+                          type="file"
+                          accept="image/*"
+                          className="mt-1"
+                        />
+                      </div>
+
+                      {/* Category */}
+                      <div>
+                        <Label className="text-gray-700">Kategori</Label>
+                        <Input
+                          {...imageForm.register("category")}
+                          required
+                          placeholder="Contoh: Latihan, Event, Prestasi"
+                          className="mt-1"
+                        />
+                      </div>
+
+                      {/* Description */}
+                      <div className="md:col-span-3">
+                        <Label className="text-gray-700">Deskripsi</Label>
+                        <Textarea
+                          {...imageForm.register("description")}
+                          required
+                          placeholder="Deskripsi singkat galeri..."
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 mt-4">
+                      <Button
+                        type="submit"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        {(imageMutation.isPending ||
+                          uploadMutation.isPending) && (
+                          <Loader2 className="animate-spin" />
+                        )}
+                        Simpan Galeri
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* List Galeri (contoh item) */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {galeryDummy?.map((item: any, index: number) => (
+                    <Card
+                      key={index}
+                      className="hover:shadow-md transition-shadow"
+                    >
+                      <CardContent className="p-3">
+                        <img
+                          src={item.image_url}
+                          alt={item.category}
+                          className="w-full h-40 object-cover rounded-md mb-2"
+                        />
+                        <p className="font-semibold text-gray-800">
+                          {item.category}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {item.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

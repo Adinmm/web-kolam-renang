@@ -50,3 +50,17 @@ export const useGetUser = (id: string) => {
     user: query,
   };
 };
+
+const getImageUrl = async()=>{
+  const response = await axiosInstance.get("/images");
+  return response.data;
+}
+export const useGetImage = () => {
+  const query = useQuery<GlobalType<string>>({
+    queryKey: ["image"],
+    queryFn: getImageUrl,
+  });
+  return {
+    image: query,
+  };
+}

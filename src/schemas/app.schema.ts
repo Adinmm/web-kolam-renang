@@ -50,6 +50,17 @@ export const LoginSchema = z.object({
 });
 export type LoginModel = z.infer<typeof LoginSchema>;
 
+export const GalerySchema = z.object({
+  url: z.string().optional(),
+  image_public_id: z.string().optional(),
+  category: z.string().optional(),
+  description: z.string().optional(),
+});
+
+export type ImageModel = z.infer<typeof GalerySchema>;
+
 export type GlobalType<T> = {
   data: T;
 };
+
+
