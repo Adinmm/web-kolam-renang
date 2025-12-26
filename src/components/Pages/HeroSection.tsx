@@ -66,8 +66,7 @@ const HeroSection = () => {
             className="text-xl md:text-2xl lg:text-3xl text-primary-foreground/90 font-light mb-4 animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
-            Berenang dengan{" "}
-            <span className=" text-white">Percaya Diri</span>
+            Berenang dengan <span className=" text-white">Percaya Diri</span>
           </p>
 
           {/* Description */}
@@ -75,9 +74,9 @@ const HeroSection = () => {
             className="text-primary-foreground/80 text-base md:text-lg max-w-2xl mx-auto mb-10 animate-fade-in"
             style={{ animationDelay: "0.3s" }}
           >
-            Klub renang profesional dengan pelatih bersertifikat nasional dan
-            fasilitas berstandar internasional. Dari pemula hingga atlet
-            prestasi, kami siap membimbing perjalanan renang Anda.
+            Klub renang dengan pelatih bersertifikat nasional dan fasilitas
+            berstandar internasional untuk mengantarkan perenang dari langkah
+            pertama hingga meraih prestasi.
           </p>
 
           {/* CTA Buttons */}
@@ -99,9 +98,9 @@ const HeroSection = () => {
             style={{ animationDelay: "0.5s" }}
           >
             {[
-              { value: "500+", label: "Siswa Aktif" },
+              { value: "150+", label: "Siswa Aktif" },
               { value: "15+", label: "Pelatih Profesional" },
-              { value: "10", label: "Tahun Pengalaman" },
+              { value: "5", label: "Tahun Pengalaman" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-3xl md:text-4xl font-display font-bold text-primary-foreground mb-1">
