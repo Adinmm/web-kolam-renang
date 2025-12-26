@@ -16,24 +16,22 @@ import {
   Loader2,
   Images,
   ImageIcon,
+  Eye,
 } from "lucide-react";
 import { useUpdateContactInformation, useUpdateUser } from "@/hooks/usePatch";
 import {
   useGetClasses,
   useGetContactInformation,
+  useGetImage,
   useGetUser,
 } from "@/hooks/useGet";
-import {
-  ClassModel,
-  ContactInformationModel,
-  ImageModel,
-} from "@/schemas/app.schema";
+import { ImageModel } from "@/schemas/app.schema";
 import {
   useCreateClass,
   useUploadImage,
   useUploadImageUrl,
 } from "@/hooks/usePost";
-import { useDeleteClass } from "@/hooks/useDelete";
+import { useDeleteClass, useDeleteImage } from "@/hooks/useDelete";
 import { Alert } from "../others/Alert";
 import { formatRupiah } from "@/lib/formatRupiah";
 
@@ -41,7 +39,7 @@ export default function DashboardPage() {
   const [idContact, setIdContact] = useState("");
   const [image, setImage] = useState<File>(new File([], ""));
 
-  const idUser = "6c65e7fb-2e4f-4270-a31f-255c8f6cac33";
+  const idUser = sessionStorage.getItem("id");
 
   const { form, mutation } = useUpdateContactInformation();
 
@@ -53,18 +51,24 @@ export default function DashboardPage() {
   const { deleteMutation } = useDeleteClass();
 
   // user query
-  const { user } = useGetUser(idUser);
-  const { form: formUser, mutation: mutationUser } = useUpdateUser(idUser);
+  const { user } = useGetUser(idUser ||"");
+  const { form: formUser, mutation: mutationUser } = useUpdateUser(idUser || "");
 
   // gallery query
   const { uploadMutation } = useUploadImage();
   const { imageForm, imageMutation } = useUploadImageUrl();
+  const { getImage } = useGetImage();
+  const { deleteImageMutation } = useDeleteImage();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
     }
+  };
+
+  const deleteImageHandler = (id: string) => {
+    deleteImageMutation.mutate(id);
   };
 
   const uploadImageHandler = async (data: ImageModel) => {
@@ -606,25 +610,61 @@ export default function DashboardPage() {
                     </div>
                   </form>
                 </div>
-
-                {/* List Galeri (contoh item) */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {galeryDummy?.map((item: any, index: number) => (
+                {/* ================= List Galeri ================= */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {getImage?.data?.data?.map((item, index) => (
                     <Card
                       key={index}
-                      className="hover:shadow-md transition-shadow"
+                      className="overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all"
                     >
-                      <CardContent className="p-3">
+                      {/* Image */}
+                      <div className="relative">
                         <img
-                          src={item.image_url}
-                          alt={item.category}
-                          className="w-full h-40 object-cover rounded-md mb-2"
+                          src={item?.url}
+                          alt={item?.category}
+                          className="w-full h-48 object-cover"
                         />
-                        <p className="font-semibold text-gray-800">
-                          {item.category}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {item.description}
+
+                        {/* Action Buttons */}
+                        <div className="absolute top-3 right-3 flex gap-2">
+                          <Button
+                            size="icon"
+                            variant="secondary"
+                            className="h-8 w-8 bg-white/90 backdrop-blur hover:bg-white"
+                            onClick={() =>
+                              window.open(
+                                item?.url,
+                                "_blank",
+                                "noopener,noreferrer"
+                              )
+                            }
+                          >
+                            <Eye className="w-4 h-4 text-gray-700" />
+                          </Button>
+
+                          <Alert
+                            buttonProps={
+                              <Button
+                                size="icon"
+                                variant="destructive"
+                                className="h-8 w-8"
+                              >
+                                <Trash2 className="w-4 h-4 text-white" />
+                              </Button>
+                            }
+                            ondelete={() => deleteImageHandler(item?.id || "")}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <CardContent className="p-4 space-y-2">
+                        <Badge variant="secondary" className="w-fit">
+                          {item?.category}
+                        </Badge>
+
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          {item?.description}
                         </p>
                       </CardContent>
                     </Card>

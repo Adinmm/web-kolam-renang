@@ -83,9 +83,7 @@ export const useUploadImage = () => {
   const mutation = useMutation({
     mutationKey: ["upload_image"],
     mutationFn: (file: File) => uploadImage(file),
-    onSuccess: () => {
-      alert("upload gambar berhasil");
-    },
+    onSuccess: () => {},
     onError: (error) => {
       console.log(error);
     },
@@ -93,7 +91,7 @@ export const useUploadImage = () => {
   return {
     uploadMutation: mutation,
   };
-}
+};
 
 const uploadImageUrl = async (data: ImageModel) => {
   const response = await axiosInstance.post("/image_url", data);
@@ -109,6 +107,7 @@ export const useUploadImageUrl = () => {
     mutationFn: (data: ImageModel) => uploadImageUrl(data),
     onSuccess: () => {
       alert("upload gambar url berhasil");
+      window.location.reload();
     },
     onError: (error) => {
       console.log(error);

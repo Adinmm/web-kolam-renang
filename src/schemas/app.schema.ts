@@ -51,6 +51,7 @@ export const LoginSchema = z.object({
 export type LoginModel = z.infer<typeof LoginSchema>;
 
 export const GalerySchema = z.object({
+  id: z.string().optional(),
   url: z.string().optional(),
   image_public_id: z.string().optional(),
   category: z.string().optional(),

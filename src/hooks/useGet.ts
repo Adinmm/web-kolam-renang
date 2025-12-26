@@ -3,6 +3,7 @@ import {
   ClassModel,
   ContactInformationModel,
   GlobalType,
+  ImageModel,
   UserModel,
 } from "@/schemas/app.schema";
 import { useQuery } from "@tanstack/react-query";
@@ -56,11 +57,11 @@ const getImageUrl = async()=>{
   return response.data;
 }
 export const useGetImage = () => {
-  const query = useQuery<GlobalType<string>>({
-    queryKey: ["image"],
+  const query = useQuery<GlobalType<ImageModel[]>>({
+    queryKey: ["images"],
     queryFn: getImageUrl,
   });
   return {
-    image: query,
+    getImage: query,
   };
 }
