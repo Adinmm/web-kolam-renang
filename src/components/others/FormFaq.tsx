@@ -43,7 +43,7 @@ export function FormFaq({ buttonProps }: FaqProps) {
         <div className="grid gap-4">
           <div className="grid gap-3">
             <Label>Kategori</Label>
-            <Input onChange={(e) => setCategory(e.target.value)} />
+            <Input required onChange={(e) => setCategory(e.target.value)} />
           </div>
         </div>
         <DialogFooter>
