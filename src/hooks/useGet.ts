@@ -1,6 +1,8 @@
+"use client"
 import { axiosInstance } from "@/lib/axiosInstance";
 import {
   ClassModel,
+  CoachModel,
   ContactInformationModel,
   GlobalType,
   ImageModel,
@@ -52,10 +54,10 @@ export const useGetUser = (id: string) => {
   };
 };
 
-const getImageUrl = async()=>{
+const getImageUrl = async () => {
   const response = await axiosInstance.get("/images");
   return response.data;
-}
+};
 export const useGetImage = () => {
   const query = useQuery<GlobalType<ImageModel[]>>({
     queryKey: ["images"],
@@ -64,4 +66,33 @@ export const useGetImage = () => {
   return {
     getImage: query,
   };
-}
+};
+
+const getCoach = async () => {
+  const response = await axiosInstance.get("/coaches");
+  return response.data;
+};
+export const useGetCoach = () => {
+  const query = useQuery<GlobalType<CoachModel[]>>({
+    queryKey: ["coaches"],
+    queryFn: getCoach,
+  });
+  return {
+    getCoach: query,
+  };
+};
+
+const getFaqCategories = async () => {
+  const response = await axiosInstance.get("/faq_categories");
+  return response.data;
+};
+
+export const useGetFaqCategories = () => {
+  const query = useQuery<GlobalType<any[]>>({
+    queryKey: ["faq_categories"],
+    queryFn: getFaqCategories,
+  });
+  return {
+    getFaqCategories: query,
+  };
+};

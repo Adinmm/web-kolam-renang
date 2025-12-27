@@ -3,6 +3,10 @@ import { authInstance, axiosInstance } from "@/lib/axiosInstance";
 import {
   ClassModel,
   ClassSchema,
+  CoachModel,
+  CoachSchema,
+  FaqQuestionModel,
+  FaqQuestionSchema,
   GalerySchema,
   ImageModel,
   LoginModel,
@@ -116,5 +120,82 @@ export const useUploadImageUrl = () => {
   return {
     imageMutation: mutation,
     imageForm: form,
+  };
+};
+
+const createCoach = async (data: CoachModel) => {
+  const response = await axiosInstance.post("/coach", data);
+  return response.data;
+};
+
+export const useCreateCoach = () => {
+  const form = useForm({
+    resolver: zodResolver(CoachSchema),
+  });
+  const mutation = useMutation({
+    mutationKey: ["create_coach"],
+    mutationFn: (data: CoachModel) => createCoach(data),
+    onSuccess: () => {
+      alert("create successfully");
+      window.location.reload();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return {
+    coachForm: form,
+    coachMutation: mutation,
+  };
+};
+
+const createFaqCategory = async (data: { category: string }) => {
+  const response = await axiosInstance.post("/faq_category", data);
+  return response.data;
+};
+
+export const useCreateFaqCategory = () => {
+  const mutation = useMutation({
+    mutationKey: ["create_coach"],
+    mutationFn: (data: { category: string }) => createFaqCategory(data),
+    onSuccess: () => {
+      alert("create faq category successfully");
+      window.location.reload();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return {
+    faqCategory: mutation,
+  };
+};
+
+const createFaqQuestion = async (data: FaqQuestionModel) => {
+  const response = await axiosInstance.post("/faq_question", data);
+  return response.data;
+};
+
+export const useCreateFaqQuestion = () => {
+  const query = useQueryClient();
+  const form = useForm({
+    resolver: zodResolver(FaqQuestionSchema),
+  });
+  const mutation = useMutation({
+    mutationKey: ["create_coach"],
+    mutationFn: (data: any) => createFaqQuestion(data),
+    onSuccess: () => {
+      alert("create successfully");
+      query.invalidateQueries({
+        queryKey: ["faq_categories"],
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return {
+    faqForm: form,
+    faqMutation: mutation,
   };
 };

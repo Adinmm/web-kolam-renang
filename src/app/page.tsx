@@ -6,6 +6,8 @@ import AboutSection from "@/components/Pages/AboutSection";
 import ContactSection from "@/components/Pages/ContactSection";
 import Footer from "@/components/Pages/Footer";
 import GallerySection from "@/components/Pages/GallerySections";
+import CoachesSection from "@/components/Pages/CoachesSection";
+import FAQSection from "@/components/Pages/FaqSection";
 
 const Index = () => {
   return (
@@ -13,12 +15,14 @@ const Index = () => {
       <div className="min-h-screen bg-background">
         <Navbar />
         <main>
-          <HeroSection />
-          <ProgramsSection />
-          <GallerySection />
-          <RegistrationSection />
-          <AboutSection />
-          <ContactSection />
+          <HeroSection /> {/* Pengenalan dan hero utama */}
+          <AboutSection /> {/* Tentang Sonic Swimming Club */}
+          <ProgramsSection /> {/* Program & layanan */}
+          <CoachesSection /> {/* Tim pelatih */}
+          <GallerySection /> {/* Galeri kegiatan */}
+          <FAQSection /> {/* Pertanyaan umum */}
+          <RegistrationSection /> {/* Call-to-action: daftar */}
+          <ContactSection /> {/* Kontak & lokasi */}
         </main>
         <Footer />
       </div>

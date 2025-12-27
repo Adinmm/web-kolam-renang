@@ -26,10 +26,9 @@ export function Alert({ondelete,buttonProps}: AlertProps) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Apakah Anda benar-benar yakin?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+           Tindakan ini tidak dapat dibatalkan. Ini akan menghapus Item Anda secara permanen dan menghapus data Anda dari server.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

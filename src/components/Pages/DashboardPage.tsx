@@ -17,27 +17,51 @@ import {
   Images,
   ImageIcon,
   Eye,
+  User,
+  UserCheck,
+  HelpCircle,
+  Plus,
+  Pencil,
 } from "lucide-react";
 import { useUpdateContactInformation, useUpdateUser } from "@/hooks/usePatch";
 import {
   useGetClasses,
+  useGetCoach,
   useGetContactInformation,
+  useGetFaqCategories,
   useGetImage,
   useGetUser,
 } from "@/hooks/useGet";
-import { ImageModel } from "@/schemas/app.schema";
+import { CoachModel, FaqQuestionModel, ImageModel } from "@/schemas/app.schema";
 import {
   useCreateClass,
+  useCreateCoach,
+  useCreateFaqQuestion,
   useUploadImage,
   useUploadImageUrl,
 } from "@/hooks/usePost";
-import { useDeleteClass, useDeleteImage } from "@/hooks/useDelete";
+import {
+  useDeleteClass,
+  useDeleteCoach,
+  useDeleteFaq,
+  useDeleteFaqCategory,
+  useDeleteImage,
+} from "@/hooks/useDelete";
 import { Alert } from "../others/Alert";
 import { formatRupiah } from "@/lib/formatRupiah";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { FormFaq } from "../others/FormFaq";
 
 export default function DashboardPage() {
   const [idContact, setIdContact] = useState("");
   const [image, setImage] = useState<File>(new File([], ""));
+  const [idFaqCategory, setIdFaqCategory] = useState("");
 
   const idUser = sessionStorage.getItem("id");
 
@@ -51,8 +75,10 @@ export default function DashboardPage() {
   const { deleteMutation } = useDeleteClass();
 
   // user query
-  const { user } = useGetUser(idUser ||"");
-  const { form: formUser, mutation: mutationUser } = useUpdateUser(idUser || "");
+  const { user } = useGetUser(idUser || "");
+  const { form: formUser, mutation: mutationUser } = useUpdateUser(
+    idUser || ""
+  );
 
   // gallery query
   const { uploadMutation } = useUploadImage();
@@ -60,11 +86,49 @@ export default function DashboardPage() {
   const { getImage } = useGetImage();
   const { deleteImageMutation } = useDeleteImage();
 
+  // pelatih query
+  const { coachForm, coachMutation } = useCreateCoach();
+  const { getCoach } = useGetCoach();
+  const { deleteCoachMutation } = useDeleteCoach();
+
+  // faq query
+
+  const { faqForm, faqMutation } = useCreateFaqQuestion();
+  const { getFaqCategories } = useGetFaqCategories();
+  const { deleteFaqMutation } = useDeleteFaq();
+  const { deleteFaqCategoryMutation } = useDeleteFaqCategory();
+
+  const question = getFaqCategories?.data?.data;
+
+  const createFaqHandler = (data: any) => {
+    const dataSending = {
+      question: data?.question,
+      answer: data?.answer,
+      categoryId: idFaqCategory,
+    };
+    faqMutation.mutate(dataSending);
+  };
+
+  const deleteFaqHandler = (id: string) => {
+    deleteFaqMutation.mutate(id);
+  };
+  const deleteFaqCategoryHandler = (id: string) => {
+    deleteFaqCategoryMutation.mutate(id);
+  };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
     }
+  };
+  const createCoachHandler = async (data: CoachModel) => {
+    const uploadCoachImage = await uploadMutation.mutateAsync(image);
+    const dataSending = {
+      ...data,
+      url: uploadCoachImage?.data?.image_url,
+      image_public_id: uploadCoachImage?.data?.public_id,
+    };
+    await coachMutation.mutateAsync(dataSending);
   };
 
   const deleteImageHandler = (id: string) => {
@@ -132,48 +196,83 @@ export default function DashboardPage() {
     deleteMutation.mutate(id);
   };
 
+  const deleteCoachHandler = (id: string) => {
+    deleteCoachMutation.mutate(id);
+  };
+
   useEffect(() => {
     update(query.data?.data);
     updateUser(user?.data?.data);
   }, [query.data, user.data]);
 
-  const galeryDummy = [
+  const faqs = [
     {
-      id: "1",
-      image_url: "https://images.unsplash.com/photo-1521412644187-c49fa049e84d",
-      category: "Latihan",
-      description:
-        "Sesi latihan rutin untuk meningkatkan teknik dan stamina renang.",
-      created_at: "2025-01-10",
+      category: "Pendaftaran",
+      questions: [
+        {
+          q: "Bagaimana cara mendaftar di AquaSwim Club?",
+          a: "Anda dapat mendaftar melalui form online di website kami atau datang langsung ke lokasi kolam renang. Setelah mengisi form, tim kami akan menghubungi Anda untuk konfirmasi jadwal dan pembayaran.",
+        },
+        {
+          q: "Apakah ada syarat usia untuk mendaftar?",
+          a: "Kami menerima siswa dari usia 4 tahun ke atas. Untuk anak di bawah 6 tahun, wajib didampingi orang tua saat sesi latihan pertama.",
+        },
+        {
+          q: "Dokumen apa saja yang diperlukan untuk pendaftaran?",
+          a: "Anda perlu menyiapkan fotokopi KTP/kartu identitas, pas foto 3x4 (2 lembar), dan surat keterangan sehat dari dokter (opsional tapi disarankan).",
+        },
+      ],
     },
     {
-      id: "2",
-      image_url: "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf",
-      category: "Event",
-      description:
-        "Kejuaraan renang tingkat regional dengan atlet-atlet terbaik.",
-      created_at: "2025-01-15",
+      category: "Jadwal & Kelas",
+      questions: [
+        {
+          q: "Berapa lama durasi setiap sesi latihan?",
+          a: "Setiap sesi latihan berlangsung 60 menit untuk kelas reguler dan 90 menit untuk kelas prestasi. Kami menyarankan datang 15 menit lebih awal untuk persiapan.",
+        },
+        {
+          q: "Apakah jadwal kelas bisa diganti jika berhalangan?",
+          a: "Ya, Anda dapat mengajukan perubahan jadwal maksimal 1 hari sebelumnya melalui WhatsApp admin. Penggantian jadwal dapat dilakukan maksimal 2 kali per bulan.",
+        },
+        {
+          q: "Berapa jumlah siswa dalam satu kelas?",
+          a: "Kelas pemula dan anak maksimal 6 siswa per pelatih. Kelas dewasa maksimal 8 siswa, dan kelas prestasi maksimal 4 siswa untuk memastikan perhatian optimal.",
+        },
+      ],
     },
     {
-      id: "3",
-      image_url: "https://images.unsplash.com/photo-1509223197845-458d87318791",
-      category: "Prestasi",
-      description: "Atlet berhasil meraih medali emas pada ajang nasional.",
-      created_at: "2025-01-20",
+      category: "Biaya & Pembayaran",
+      questions: [
+        {
+          q: "Apa saja metode pembayaran yang tersedia?",
+          a: "Kami menerima pembayaran via transfer bank (BCA, Mandiri, BNI), e-wallet (GoPay, OVO, DANA), dan tunai di lokasi. Pembayaran bulanan dilakukan di awal bulan.",
+        },
+        {
+          q: "Apakah ada biaya pendaftaran?",
+          a: "Ya, biaya pendaftaran sekali bayar sebesar Rp 150.000 yang mencakup kartu member, assessment awal, dan perlengkapan dasar (topi renang).",
+        },
+        {
+          q: "Apakah ada diskon untuk pendaftaran keluarga?",
+          a: "Ada! Diskon 10% untuk anggota keluarga kedua dan 15% untuk anggota ketiga dan seterusnya. Kami juga memiliki paket keluarga khusus.",
+        },
+      ],
     },
     {
-      id: "4",
-      image_url: "https://images.unsplash.com/photo-1546484959-fd96d8e52c06",
-      category: "Latihan",
-      description: "Latihan teknik start dan turn untuk perenang pemula.",
-      created_at: "2025-01-25",
-    },
-    {
-      id: "5",
-      image_url: "https://images.unsplash.com/photo-1526676034484-07f3e94b8f8c",
-      category: "Event",
-      description: "Fun swimming dan gathering bersama orang tua atlet.",
-      created_at: "2025-02-01",
+      category: "Fasilitas & Keamanan",
+      questions: [
+        {
+          q: "Fasilitas apa saja yang tersedia?",
+          a: "Kami memiliki kolam renang standar olimpiade, ruang ganti dengan loker, kamar mandi air hangat, area tunggu ber-AC untuk orang tua, dan kantin.",
+        },
+        {
+          q: "Bagaimana standar keamanan di kolam renang?",
+          a: "Keamanan adalah prioritas kami. Setiap sesi ada minimal 2 lifeguard bertugas, CCTV 24 jam, peralatan P3K lengkap, dan semua pelatih tersertifikasi CPR.",
+        },
+        {
+          q: "Apakah orang tua boleh menunggu di area kolam?",
+          a: "Ya, kami menyediakan area tunggu dengan pandangan langsung ke kolam renang. Orang tua juga dapat memantau perkembangan anak melalui laporan bulanan.",
+        },
+      ],
     },
   ];
 
@@ -191,34 +290,48 @@ export default function DashboardPage() {
         </div>
         {/* Main Tabs */}
         <Tabs defaultValue="user" className="w-full">
-          <TabsList className="grid grid-cols-4 w-full mb-6 bg-white border shadow-sm">
+          <TabsList className="grid grid-cols-6 w-full mb-6 bg-white border shadow-sm">
             <TabsTrigger
               value="user"
               className="data-[state=active]:bg-blue-500 data-[state=active]:text-white"
             >
               <Users className="w-4 h-4 mr-2" />
-              User
+              <span className={`hidden lg:inline`}>User</span>
             </TabsTrigger>
             <TabsTrigger
               value="kelas"
               className="data-[state=active]:bg-purple-500 data-[state=active]:text-white"
             >
               <BookOpen className="w-4 h-4 mr-2" />
-              Kelas
+              <span className={`hidden lg:inline`}>Kelas</span>
             </TabsTrigger>
             <TabsTrigger
               value="contact"
               className="data-[state=active]:bg-green-500 data-[state=active]:text-white"
             >
               <Phone className="w-4 h-4 mr-2" />
-              Kontak
+              <span className={`hidden lg:inline`}>Kontak</span>
             </TabsTrigger>
             <TabsTrigger
               value="galery"
               className="data-[state=active]:bg-green-500 data-[state=active]:text-white"
             >
               <Images className="w-4 h-4 mr-2" />
-              Galeri
+              <span className={`hidden lg:inline`}>Galeri</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="coach"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white"
+            >
+              <UserCheck className="w-4 h-4 mr-2" />
+              <span className={`hidden lg:inline`}>Pelatih</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="faq"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white"
+            >
+              <HelpCircle className="w-4 h-4 mr-2" />
+              <span className={`hidden lg:inline`}>FAQ</span>
             </TabsTrigger>
           </TabsList>
 
@@ -673,10 +786,301 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* ================= Coach TAB ================= */}
+          <TabsContent value="coach">
+            <Card className="shadow-lg border-0">
+              <CardHeader className="bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
+                <CardTitle className="flex items-center gap-2">
+                  <User className="w-5 h-5" />
+                  Manajemen Pelatih
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent className="p-6 space-y-6">
+                {/* ================= Form Coach ================= */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <h3 className="font-semibold mb-4 text-gray-700">
+                    Tambah Pelatih
+                  </h3>
+
+                  <form onSubmit={coachForm.handleSubmit(createCoachHandler)}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Nama */}
+                      <div>
+                        <Label>Nama Pelatih</Label>
+                        <Input
+                          required
+                          {...coachForm.register("name")}
+                          placeholder="Contoh: Coach Ahmad"
+                          className="mt-1"
+                        />
+                      </div>
+
+                      {/* Upload Foto */}
+                      <div>
+                        <Label>Foto Pelatih</Label>
+                        <Input
+                          required
+                          onChange={handleImageChange}
+                          type="file"
+                          accept="image/*"
+                          className="mt-1"
+                        />
+                      </div>
+
+                      {/* Experience */}
+                      <div>
+                        <Label>Pengalaman</Label>
+                        <Input
+                          required
+                          {...coachForm.register("experience")}
+                          placeholder="Contoh: 10 tahun"
+                          className="mt-1"
+                        />
+                      </div>
+
+                      {/* Specialization */}
+                      <div>
+                        <Label>Spesialisasi</Label>
+                        <Input
+                          required
+                          {...coachForm.register("specialization")}
+                          placeholder="Contoh: Gaya Bebas & Dada"
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 mt-4">
+                      <Button
+                        type="submit"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        {coachMutation.isPending ||
+                          (uploadMutation.isPending && (
+                            <Loader2 className="animate-spin" />
+                          ))}
+                        Simpan Pelatih
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* ================= List Coach ================= */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {getCoach?.data?.data?.map((coach, index) => (
+                    <Card
+                      key={index}
+                      className="overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all"
+                    >
+                      {/* Image */}
+                      <div className="relative">
+                        <img
+                          src={coach?.url}
+                          alt={coach?.name}
+                          className="w-full h-56 object-cover"
+                        />
+
+                        {/* Action */}
+                        <div className="absolute top-3 right-3 flex gap-2">
+                          <Button
+                            size="icon"
+                            variant="secondary"
+                            className="h-8 w-8 bg-white/90 backdrop-blur hover:bg-white"
+                            onClick={() =>
+                              window.open(
+                                coach?.url,
+                                "_blank",
+                                "noopener,noreferrer"
+                              )
+                            }
+                          >
+                            <Eye className="w-4 h-4 text-gray-700" />
+                          </Button>
+
+                          <Alert
+                            buttonProps={
+                              <Button
+                                size="icon"
+                                variant="destructive"
+                                className="h-8 w-8"
+                              >
+                                <Trash2 className="w-4 h-4 text-white" />
+                              </Button>
+                            }
+                            ondelete={() => deleteCoachHandler(coach?.id || "")}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <CardContent className="p-4 space-y-2">
+                        <h4 className="font-semibold">{coach?.name}</h4>
+
+                        <Badge variant="secondary" className="w-fit">
+                          {coach?.specialization}
+                        </Badge>
+
+                        <p className="text-sm text-gray-600">
+                          Pengalaman: {coach?.experience}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* ================= FAQ TAB ================= */}
+          <TabsContent value="faq">
+            <Card className="shadow-lg border-0">
+              <CardHeader className="bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
+                <CardTitle className="flex items-center gap-2">
+                  <HelpCircle className="w-5 h-5" />
+                  Manajemen FAQ
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent className="p-6 space-y-6">
+                {/* ================= Form FAQ ================= */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="flex items-center justify-between w-full mb-4">
+                    <h3 className="font-semibold  text-gray-700">
+                      Tambah / Edit FAQ
+                    </h3>
+                    <FormFaq buttonProps={<Button>Tambah Category</Button>} />
+                  </div>
+
+                  <form onSubmit={faqForm.handleSubmit(createFaqHandler)}>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Category */}
+                      <div>
+                        <Label>Kategori</Label>
+                        <Select required onValueChange={setIdFaqCategory}>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Pilih kategori" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {getFaqCategories?.data?.data?.map(
+                              (cat: any, index) => (
+                                <SelectItem key={index} value={cat?.id}>
+                                  {cat?.category}
+                                </SelectItem>
+                              )
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Question */}
+                      <div className="md:col-span-2">
+                        <Label>Pertanyaan</Label>
+                        <Input
+                          {...faqForm.register("question")}
+                          required
+                          placeholder="Contoh: Bagaimana cara mendaftar?"
+                          className="mt-1"
+                        />
+                      </div>
+
+                      {/* Answer */}
+                      <div className="md:col-span-3">
+                        <Label>Jawaban</Label>
+                        <Textarea
+                          {...faqForm.register("answer")}
+                          required
+                          placeholder="Masukkan jawaban lengkap"
+                          className="mt-1 min-h-[120px]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 mt-4">
+                      <Button
+                        type="submit"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        {faqMutation.isPending && (
+                          <Loader2 className="animate-spin " />
+                        )}
+                        Simpan FAQ
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* ================= List FAQ (Grouped by Category) ================= */}
+
+                <div className="space-y-6">
+                  {question?.map((group, index) => (
+                    <div key={index} className="space-y-3">
+                      {/* Category Title */}
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-blue-100 text-blue-700">
+                          {group.category}
+                        </Badge>
+                        <Alert
+                          buttonProps={
+                            <button className="cursor-pointer">
+                              <Trash2 className="text-red-600" size={15} />
+                            </button>
+                          }
+                          ondelete={() => deleteFaqCategoryHandler(group?.id)}
+                        />
+                      </div>
+
+                      {/* Questions */}
+                      {group?.questions?.map((item: any, i: number) => (
+                        <Card
+                          key={i}
+                          className="hover:shadow-md transition-shadow"
+                        >
+                          <CardContent className="p-4">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-full flex items-center justify-center">
+                                  <HelpCircle className="w-6 h-6 text-blue-600" />
+                                </div>
+
+                                <div className="space-y-1">
+                                  <p className="font-semibold text-gray-800">
+                                    {item.question}
+                                  </p>
+                                  <p className="text-sm text-gray-600 max-w-2xl">
+                                    {item.answer}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Action */}
+                              <div className="flex gap-2">
+                                <Alert
+                                  buttonProps={
+                                    <Button
+                                      className="text-white"
+                                      size="icon"
+                                      variant="destructive"
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                  }
+                                  ondelete={() => deleteFaqHandler(item?.id)}
+                                />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
-
-      {/* Delete Confirmation Dialog */}
     </div>
   );
 }

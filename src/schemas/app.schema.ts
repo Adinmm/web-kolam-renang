@@ -60,8 +60,29 @@ export const GalerySchema = z.object({
 
 export type ImageModel = z.infer<typeof GalerySchema>;
 
+export const CoachSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().optional(),
+  url: z.string().optional(),
+  image_public_id: z.string().optional(),
+  experience: z.string().optional(),
+  specialization: z.string().optional(),
+});
+
+export type CoachModel = z.infer<typeof CoachSchema>;
+
+export const FaqQuestionSchema = z.object({
+  question: z.string().optional(),
+  answer: z.string().optional(),
+  categoryId: z.string().optional()
+});
+
+export type FaqQuestionModel = {
+  question: string;
+  answer: string;
+  categoryId: string
+}
+
 export type GlobalType<T> = {
   data: T;
 };
-
-
