@@ -65,9 +65,10 @@ const ProgramsSection = () => {
 
                 <CardTitle className="text-xl">{program.class_name}</CardTitle>
 
-                <CardDescription className="text-sm leading-relaxed line-clamp-3">
-                  {program.description}
-                </CardDescription>
+        <CardDescription className="text-sm leading-relaxed whitespace-normal">
+  {program.description}
+</CardDescription>
+
               </CardHeader>
 
               {/* Content */}
