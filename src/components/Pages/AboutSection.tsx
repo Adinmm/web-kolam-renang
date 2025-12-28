@@ -44,7 +44,7 @@ const AboutSection = () => {
               {/* Stats */}
               <div className="grid grid-cols-3 gap-6 pt-6">
                 {[
-                  { value: "500+", label: "Siswa Lulus" },
+                  { value: "100+", label: "Siswa Lulus" },
                   { value: "50+", label: "Medali Kompetisi" },
                   { value: "98%", label: "Kepuasan Siswa" },
                 ].map((stat) => (
