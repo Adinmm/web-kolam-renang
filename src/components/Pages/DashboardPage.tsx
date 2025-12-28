@@ -485,11 +485,11 @@ export default function DashboardPage() {
                         />
                       </div>
 
-                      <div>
+                      <div className="md:col-span-2">
                         <Label className="text-gray-700">
                           Item Kelas (pisahkan dengan koma)
                         </Label>
-                        <Input
+                        <Textarea
                           placeholder="JSX, Hooks, State"
                           {...classForm.register("class_items")}
                           className="mt-1"

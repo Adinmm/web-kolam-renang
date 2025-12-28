@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   creator: "Sonic Swimming Club",
   publisher: "Sonic Swimming Club",
 
-  metadataBase: new URL("https://www.sonicswimmingclub.online"),
+  metadataBase: new URL("https://www.clubrenangmedan.online"),
 
   alternates: {
     canonical: "/",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     title: "Sonic Swimming Club - Kursus Renang Profesional",
     description:
       "Kursus dan les renang anak serta dewasa di Deli Serdang & Medan dengan pelatih profesional dan bersertifikat.",
-    url: "https://www.sonicswimmingclub.online",
+    url: "https://www.clubrenangmedan.online",
     siteName: "Sonic Swimming Club",
     locale: "id_ID",
     type: "website",
