@@ -6,9 +6,8 @@ import { useGetContactInformation } from "@/hooks/useGet";
 import { convertPhone } from "@/lib/convertPhone";
 
 const ContactSection = () => {
-  
   const { query } = useGetContactInformation();
-  const whatsappNumber = convertPhone(query.data?.data?.phone ||"")
+  const whatsappNumber = convertPhone(query.data?.data?.phone || "");
   const whatsappMessage = encodeURIComponent(
     "Halo, saya tertarik untuk mendaftar di Sonic Swimming Club. Bisa dibantu?"
   );
@@ -61,10 +60,12 @@ const ContactSection = () => {
                         Telepon
                       </h4>
                       <a
-                        href={`tel:+${convertPhone(query?.data?.data?.phone ||"")}`}
+                        href={`tel:+${convertPhone(
+                          query?.data?.data?.phone || ""
+                        )}`}
                         className="text-muted-foreground hover:text-primary transition-colors text-sm"
                       >
-                        +{convertPhone(query?.data?.data?.phone ||"")}
+                        +{convertPhone(query?.data?.data?.phone || "")}
                       </a>
                     </div>
                   </div>
@@ -130,7 +131,6 @@ const ContactSection = () => {
             {/* Map */}
             <div className="lg:col-span-3">
               <Card className="shadow-card overflow-hidden h-full min-h-[400px]">
-               
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.910179800621!2d98.71842819999999!3d3.6080289999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131be0b7b9735%3A0xbf30b14549c73ed8!2sKursus%20Renang%20Medan%20(%20Sonic%20SC)!5e0!3m2!1sid!2sid!4v1766569624551!5m2!1sid!2sid"
                   width="100%"
@@ -140,7 +140,7 @@ const ContactSection = () => {
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   title="Lokasi Sonic Swimming Club"
-                  className="grayscale hover:grayscale-0 transition-all duration-500"
+                  className=" transition-all duration-500"
                 />
               </Card>
             </div>

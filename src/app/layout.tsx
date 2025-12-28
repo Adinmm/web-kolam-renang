@@ -18,11 +18,12 @@ const poppins = localFont({
 // Metadata SEO Tingkat Lanjut
 export const metadata: Metadata = {
   title: {
-    default: "Sonic swimming Club - Kursus Renang Profesional Deli Serdang",
-    template: "%s | Sonic swimming Club",
+    default: "Sonic Swimming Club - Kursus Renang Profesional Deli Serdang",
+    template: "%s | Sonic Swimming Club",
   },
+
   description:
-    "Klub renang profesional di Deli Serdang & Medan. Melayani les renang anak dan dewasa dengan pelatih bersertifikat di Kenangan, Percut Sei Tuan.",
+    "Sonic Swimming Club adalah klub renang profesional di Deli Serdang & Medan. Melayani kursus renang anak dan dewasa dengan pelatih bersertifikat di Kenangan, Percut Sei Tuan.",
 
   keywords: [
     "kursus renang Deli Serdang",
@@ -30,34 +31,27 @@ export const metadata: Metadata = {
     "kursus renang anak",
     "les renang dewasa",
     "Sonic Swimming Club",
+    "klub renang Medan",
     "pelatihan renang profesional",
     "sekolah renang anak Medan",
     "kursus renang pemula",
-    "les renang untuk anak dan dewasa",
-    "instruktur renang berpengalaman",
-    "Sonic Swimming Club Deli Serdang",
-    "kursus renang privat Medan",
-    "les renang aman untuk anak",
-    "program renang kompetitif",
-    "belajar renang cepat dan efektif",
+    "les renang privat Medan",
+    "instruktur renang bersertifikat",
+    "belajar renang anak dan dewasa",
+    "kursus renang Kenangan",
+    "les renang Percut Sei Tuan",
   ],
-  authors: [{ name: "Sonic swimming Club" }],
-  creator: "Sonic swimming Club",
-  publisher: "Sonic swimming Club",
+
+  authors: [{ name: "Sonic Swimming Club" }],
+  creator: "Sonic Swimming Club",
+  publisher: "Sonic Swimming Club",
 
   metadataBase: new URL("https://www.sonicswimmingclub.online"),
+
   alternates: {
     canonical: "/",
-    types: {
-      facebook: "https://www.facebook.com/share/1FRWdCtRXV/",
-      instagram:
-        "https://www.instagram.com/sonicswimmingclubmedan?igsh=MXVmdXd4d2UyNnAwZA==",
-      youtube:
-        "https://youtube.com/@sonicswimmingclubmedan?si=Q6j68pdgPLs0o3ng",
-      tiktok:
-        "https://www.tiktok.com/@sonic_swimming_club?_r=1&_t=ZS-92VrVtLk0qf",
-    },
   },
+
   robots: {
     index: true,
     follow: true,
@@ -69,10 +63,11 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+
   openGraph: {
     title: "Sonic Swimming Club - Kursus Renang Profesional",
     description:
-      "Program les renang anak dan dewasa di Deli Serdang dengan pelatih profesional.",
+      "Kursus dan les renang anak serta dewasa di Deli Serdang & Medan dengan pelatih profesional dan bersertifikat.",
     url: "https://www.sonicswimmingclub.online",
     siteName: "Sonic Swimming Club",
     locale: "id_ID",
@@ -87,10 +82,19 @@ export const metadata: Metadata = {
     ],
   },
 
+  twitter: {
+    card: "summary_large_image",
+    title: "Sonic Swimming Club - Kursus Renang Profesional",
+    description:
+      "Les renang anak dan dewasa di Deli Serdang & Medan dengan pelatih bersertifikat.",
+    images: ["/og-image.jpg"],
+  },
+
   icons: {
     icon: "/icon.png",
     apple: "/apple-touch-icon.png",
   },
+
   category: "sports",
 };
 

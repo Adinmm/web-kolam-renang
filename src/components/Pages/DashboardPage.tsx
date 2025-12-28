@@ -22,6 +22,7 @@ import {
   HelpCircle,
   Plus,
   Pencil,
+  X,
 } from "lucide-react";
 import { useUpdateContactInformation, useUpdateUser } from "@/hooks/usePatch";
 import {
@@ -57,11 +58,20 @@ import {
   SelectValue,
 } from "../ui/select";
 import { FormFaq } from "../others/FormFaq";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 
 export default function DashboardPage() {
   const [idContact, setIdContact] = useState("");
   const [image, setImage] = useState<File>(new File([], ""));
   const [idFaqCategory, setIdFaqCategory] = useState("");
+
+  const [previewImage, setPreviewImage] = useState<any>(null);
 
   const idUser = sessionStorage.getItem("id");
 
@@ -428,18 +438,21 @@ export default function DashboardPage() {
           {/* ================= KELAS TAB ================= */}
           <TabsContent value="kelas">
             <Card className="shadow-lg border-0">
+              {/* HEADER */}
               <CardHeader className="bg-linear-to-r from-purple-500 to-purple-600 text-white rounded-t-lg">
                 <CardTitle className="flex items-center gap-2">
                   <BookOpen className="w-5 h-5" />
                   Manajemen Kelas
                 </CardTitle>
               </CardHeader>
+
               <CardContent className="p-6 space-y-6">
-                {/* Form */}
+                {/* ================= FORM ================= */}
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <h3 className="font-semibold mb-4 text-gray-700">
-                    Edit User
+                    Tambah / Edit Kelas
                   </h3>
+
                   <form onSubmit={classForm.handleSubmit(createClassHandler)}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
@@ -451,6 +464,7 @@ export default function DashboardPage() {
                           required
                         />
                       </div>
+
                       <div>
                         <Label className="text-gray-700">Harga (Rp)</Label>
                         <Input
@@ -460,6 +474,7 @@ export default function DashboardPage() {
                           required
                         />
                       </div>
+
                       <div>
                         <Label className="text-gray-700">Jadwal</Label>
                         <Input
@@ -469,6 +484,7 @@ export default function DashboardPage() {
                           required
                         />
                       </div>
+
                       <div>
                         <Label className="text-gray-700">
                           Item Kelas (pisahkan dengan koma)
@@ -480,6 +496,7 @@ export default function DashboardPage() {
                           required
                         />
                       </div>
+
                       <div className="md:col-span-2">
                         <Label className="text-gray-700">Deskripsi</Label>
                         <Textarea
@@ -489,13 +506,14 @@ export default function DashboardPage() {
                         />
                       </div>
                     </div>
-                    <div className="flex gap-2 mt-4">
+
+                    <div className="mt-4">
                       <Button
                         type="submit"
                         className="bg-purple-600 hover:bg-purple-700"
                       >
                         {classMutation.isPending && (
-                          <Loader2 className="animate-spin" />
+                          <Loader2 className="animate-spin mr-2" />
                         )}
                         Tambah Kelas
                       </Button>
@@ -503,13 +521,14 @@ export default function DashboardPage() {
                   </form>
                 </div>
 
-                {/* Kelas Cards */}
+                {/* ================= LIST KELAS ================= */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {classes?.data?.data?.map((k, i) => (
                     <Card
                       key={i}
-                      className="hover:shadow-lg transition-shadow border-2"
+                      className="border-2 hover:shadow-lg transition-shadow flex flex-col h-full"
                     >
+                      {/* HEADER CARD */}
                       <CardHeader className="bg-linear-to-r from-purple-50 to-blue-50 rounded-t-xl">
                         <div className="flex justify-between items-start">
                           <div>
@@ -525,10 +544,13 @@ export default function DashboardPage() {
                           </Badge>
                         </div>
                       </CardHeader>
-                      <CardContent className="pt-4">
-                        <p className="text-sm text-gray-600 mb-3 w-full whitespace-normal">
+
+                      {/* CONTENT CARD */}
+                      <CardContent className="pt-4 flex flex-col h-full">
+                        <p className="text-sm text-gray-600 mb-3 whitespace-normal">
                           {k.description}
                         </p>
+
                         <div className="flex flex-wrap gap-1 mb-4">
                           {k.class_items?.map((item, idx) => (
                             <Badge
@@ -540,13 +562,15 @@ export default function DashboardPage() {
                             </Badge>
                           ))}
                         </div>
-                        <div className="flex gap-2">
+
+                        {/* FOOTER BUTTON — SELALU DI BAWAH */}
+                        <div className="mt-auto pt-4">
                           <Alert
                             ondelete={() => deleteClassHandler(k.id || "")}
                             buttonProps={
-                              <Button size="sm" className="flex-1 ">
+                              <Button size="sm" className="w-full">
                                 {deleteMutation.isPending ? (
-                                  <Loader2 className="animate-spin" />
+                                  <Loader2 className="animate-spin mr-2" />
                                 ) : (
                                   <Trash2 className="w-4 h-4 mr-2" />
                                 )}
@@ -660,6 +684,7 @@ export default function DashboardPage() {
           {/* ================= Galeri TAB ================= */}
           <TabsContent value="galery">
             <Card className="shadow-lg border-0">
+              {/* HEADER */}
               <CardHeader className="bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
                 <CardTitle className="flex items-center gap-2">
                   <ImageIcon className="w-5 h-5" />
@@ -667,94 +692,94 @@ export default function DashboardPage() {
                 </CardTitle>
               </CardHeader>
 
-              <CardContent className="p-6 space-y-6">
-                {/* Form Upload Galeri */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h3 className="font-semibold mb-4 text-gray-700">
+              <CardContent className="p-6 space-y-8">
+                {/* ================= UPLOAD FORM ================= */}
+                <div className="bg-muted/40 p-6 rounded-xl border">
+                  <h3 className="font-semibold mb-4 text-foreground">
                     Upload Galeri
                   </h3>
+
                   <form onSubmit={imageForm.handleSubmit(uploadImageHandler)}>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {/* Upload File */}
+                      {/* File */}
                       <div>
-                        <Label className="text-gray-700">Gambar</Label>
+                        <Label>Gambar</Label>
                         <Input
-                          onChange={handleImageChange}
                           type="file"
                           accept="image/*"
+                          onChange={handleImageChange}
                           className="mt-1"
+                          required
                         />
                       </div>
 
                       {/* Category */}
                       <div>
-                        <Label className="text-gray-700">Kategori</Label>
+                        <Label>Kategori</Label>
                         <Input
                           {...imageForm.register("category")}
-                          required
-                          placeholder="Contoh: Latihan, Event, Prestasi"
+                          placeholder="Latihan, Event, Prestasi"
                           className="mt-1"
+                          required
                         />
                       </div>
 
                       {/* Description */}
                       <div className="md:col-span-3">
-                        <Label className="text-gray-700">Deskripsi</Label>
+                        <Label>Deskripsi</Label>
                         <Textarea
                           {...imageForm.register("description")}
-                          required
-                          placeholder="Deskripsi singkat galeri..."
+                          placeholder="Deskripsi singkat galeri"
                           className="mt-1"
+                          required
                         />
                       </div>
                     </div>
 
-                    <div className="flex gap-2 mt-4">
-                      <Button
-                        type="submit"
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        {(imageMutation.isPending ||
-                          uploadMutation.isPending) && (
-                          <Loader2 className="animate-spin" />
-                        )}
-                        Simpan Galeri
-                      </Button>
-                    </div>
+                    <Button
+                      type="submit"
+                      className="mt-4 bg-blue-600 hover:bg-blue-700"
+                      disabled={
+                        imageMutation.isPending || uploadMutation.isPending
+                      }
+                    >
+                      {(imageMutation.isPending ||
+                        uploadMutation.isPending) && (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      )}
+                      Simpan Galeri
+                    </Button>
                   </form>
                 </div>
-                {/* ================= List Galeri ================= */}
+
+                {/* ================= LIST GALERI ================= */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {getImage?.data?.data?.map((item, index) => (
                     <Card
                       key={index}
-                      className="overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all"
+                      className="overflow-hidden border shadow-sm hover:shadow-lg transition"
                     >
-                      {/* Image */}
+                      {/* IMAGE */}
                       <div className="relative">
                         <img
-                          src={item?.url}
-                          alt={item?.category}
+                          src={item.url}
+                          alt={item.category}
                           className="w-full h-48 object-cover"
                         />
 
-                        {/* Action Buttons */}
+                        {/* ACTION */}
                         <div className="absolute top-3 right-3 flex gap-2">
+                          {/* PREVIEW */}
                           <Button
                             size="icon"
                             variant="secondary"
-                            className="h-8 w-8 bg-white/90 backdrop-blur hover:bg-white"
-                            onClick={() =>
-                              window.open(
-                                item?.url,
-                                "_blank",
-                                "noopener,noreferrer"
-                              )
-                            }
+                            className="h-8 w-8 bg-white/90 hover:bg-white"
+                            onClick={() => setPreviewImage(item)}
                           >
-                            <Eye className="w-4 h-4 text-gray-700" />
+                            <Eye className="w-4 h-4" />
                           </Button>
 
+                          {/* DELETE */}
                           <Alert
                             buttonProps={
                               <Button
@@ -762,22 +787,22 @@ export default function DashboardPage() {
                                 variant="destructive"
                                 className="h-8 w-8"
                               >
-                                <Trash2 className="w-4 h-4 text-white" />
+                                <Trash2 className="w-4 h-4" />
                               </Button>
                             }
-                            ondelete={() => deleteImageHandler(item?.id || "")}
+                            ondelete={() => deleteImageHandler(item.id || "")}
                           />
                         </div>
                       </div>
 
-                      {/* Content */}
+                      {/* CONTENT */}
                       <CardContent className="p-4 space-y-2">
                         <Badge variant="secondary" className="w-fit">
-                          {item?.category}
+                          {item.category}
                         </Badge>
 
-                        <p className="text-sm text-gray-600 line-clamp-2">
-                          {item?.description}
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {item.description}
                         </p>
                       </CardContent>
                     </Card>
@@ -785,6 +810,49 @@ export default function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* ================= PREVIEW DIALOG ================= */}
+            <Dialog
+              open={!!previewImage}
+              onOpenChange={() => setPreviewImage(null)}
+            >
+              <DialogContent className="max-w-4xl p-0 overflow-hidden">
+                <DialogHeader className="sr-only">
+                  <DialogTitle>Preview Galeri</DialogTitle>
+                  <DialogDescription>Detail gambar galeri</DialogDescription>
+                </DialogHeader>
+
+                {previewImage && (
+                  <div className="relative">
+                    {/* CLOSE */}
+                    <button
+                      onClick={() => setPreviewImage(null)}
+                      className="absolute top-4 right-4 z-20 p-2 rounded-full bg-background shadow"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+
+                    {/* IMAGE */}
+                    <img
+                      src={previewImage.url}
+                      alt={previewImage.category}
+                      className="w-full max-h-[70vh] object-contain bg-black"
+                    />
+
+                    {/* INFO */}
+                    <div className="p-6 space-y-2">
+                      <Badge variant="secondary" className="w-fit">
+                        {previewImage.category}
+                      </Badge>
+
+                      <p className="text-sm text-muted-foreground whitespace-normal wrap-break-word">
+                        {previewImage.description}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
           </TabsContent>
 
           {/* ================= Coach TAB ================= */}

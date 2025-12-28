@@ -40,15 +40,19 @@ const RegistrationSection = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const phoneNumber = convertPhone(query.data?.data?.phone || "");
-    const message = `
-Halo Admin, saya ingin mendaftar.
+    const message = `Halo Admin Sonic Swimming Club,
 
-Nama: ${formData.nama}
-Umur: ${formData.umur}
-No HP: ${formData.nomorHP}
-Email: ${formData.email}
-Kelas: ${formData.kelas}
-  `;
+Perkenalkan, saya ingin melakukan pendaftaran latihan renang dengan detail sebagai berikut:
+
+Nama Lengkap : ${formData.nama}
+Umur         : ${formData.umur} tahun
+Nomor HP     : ${formData.nomorHP}
+Email        : ${formData.email}
+Kelas Pilihan: ${formData.kelas}
+
+Mohon informasi lebih lanjut terkait jadwal latihan dan proses pendaftaran selanjutnya.
+
+Terima kasih.`;
 
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
       message
@@ -71,8 +75,8 @@ Kelas: ${formData.kelas}
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed">
               Isi formulir pendaftaran di samping untuk memulai perjalanan
-              renang Anda bersama Sonic Swimming Club. Tim kami akan menghubungi Anda
-              untuk konfirmasi dan jadwal trial gratis.
+              renang Anda bersama Sonic Swimming Club. Tim kami akan menghubungi
+              Anda untuk konfirmasi dan jadwal trial gratis.
             </p>
 
             <div className="space-y-4 pt-4">
@@ -118,6 +122,7 @@ Kelas: ${formData.kelas}
                   <div>
                     <label className="text-sm font-medium">Umur</label>
                     <Input
+                    
                       type="number"
                       name="umur"
                       placeholder="Umur"
@@ -130,6 +135,7 @@ Kelas: ${formData.kelas}
                   <div>
                     <label className="text-sm font-medium">Nomor HP</label>
                     <Input
+                    type="number"
                       name="nomorHP"
                       placeholder="08xxxxxxxxxx"
                       value={formData.nomorHP}

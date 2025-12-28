@@ -44,13 +44,22 @@ const FAQSection = () => {
                 </h3>
               </div>
 
-              <Accordion type="single" collapsible className="space-y-2">
+              <Accordion type="single" collapsible className="space-y-2 " >
                 {category.questions.map((faq:any, faqIndex:number) => (
-                  <AccordionItem
-                    key={faqIndex}
-                    value={`${categoryIndex}-${faqIndex}`}
-                    className="border border-border/50 rounded-lg px-4 data-[state=open]:bg-wave-light/30 "
-                  >
+                <AccordionItem
+  key={faqIndex}
+  value={`${categoryIndex}-${faqIndex}`}
+  className="
+    relative
+    border border-border/60
+    rounded-lg
+    px-4
+ 
+    data-[state=open]:bg-wave-light/30 outline-1 outline-border/60
+    -outline-offset-1
+  "
+>
+
                     <AccordionTrigger className="text-left text-foreground hover:text-primary hover:no-underline py-4">
                       {faq.question}
                     </AccordionTrigger>

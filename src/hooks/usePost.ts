@@ -29,6 +29,7 @@ export const useCreateClass = () => {
     mutationKey: ["create_class"],
     mutationFn: (data: ClassModel) => createClass(data),
     onSuccess: () => {
+      form.reset();
       query.invalidateQueries({
         queryKey: ["classes"],
       });
@@ -61,6 +62,7 @@ export const useLogin = () => {
       sessionStorage.setItem("role", data.data.role);
       alert("Login Berhasil");
       window.location.href = "/dashboard";
+      form.reset();
     },
     onError: (err) => {
       console.log(err);
@@ -110,6 +112,7 @@ export const useUploadImageUrl = () => {
     mutationKey: ["upload_image_url"],
     mutationFn: (data: ImageModel) => uploadImageUrl(data),
     onSuccess: () => {
+      form.reset();
       alert("upload gambar url berhasil");
       window.location.reload();
     },
@@ -136,6 +139,7 @@ export const useCreateCoach = () => {
     mutationKey: ["create_coach"],
     mutationFn: (data: CoachModel) => createCoach(data),
     onSuccess: () => {
+      form.reset();
       alert("create successfully");
       window.location.reload();
     },
@@ -185,6 +189,7 @@ export const useCreateFaqQuestion = () => {
     mutationKey: ["create_coach"],
     mutationFn: (data: any) => createFaqQuestion(data),
     onSuccess: () => {
+      form.reset();
       alert("create successfully");
       query.invalidateQueries({
         queryKey: ["faq_categories"],
