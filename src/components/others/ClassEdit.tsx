@@ -42,8 +42,6 @@ export function ClassEdit({ buttonProps, value, idClass }: ClassEditProps) {
   };
 
   const updateClassHandler = (data: any) => {
-
-
     const dataSending = {
       id: idClass,
       class_name: data?.class_name,
@@ -63,19 +61,22 @@ export function ClassEdit({ buttonProps, value, idClass }: ClassEditProps) {
     <Dialog>
       <DialogTrigger asChild>{buttonProps}</DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent
+        className="
+    sm:max-w-[425px]
+    max-h-[90vh]
+    overflow-y-auto
+  "
+      >
         <form
-         onSubmit={(e) => {
-    e.preventDefault();
-    updateClassForm.handleSubmit(updateClassHandler)(e);
-  }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            updateClassForm.handleSubmit(updateClassHandler)(e);
+          }}
           className="space-y-4"
         >
           <DialogHeader>
             <DialogTitle>Edit Kelas</DialogTitle>
-            <DialogDescription>
-
-            </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4">
@@ -105,7 +106,7 @@ export function ClassEdit({ buttonProps, value, idClass }: ClassEditProps) {
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="sticky bottom-0 bg-background pt-4">
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 Cancel
