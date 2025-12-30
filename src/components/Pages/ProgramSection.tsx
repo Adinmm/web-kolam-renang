@@ -96,7 +96,7 @@ const ProgramsSection = () => {
       className="flex items-start gap-2 text-sm text-muted-foreground"
     >
       <span className="w-1.5 h-1.5 mt-2 rounded-full bg-accent shrink-0" />
-      <span className="whitespace-normal break-words">
+      <span className="whitespace-normal wrap-break-word">
         {feature}
       </span>
     </li>
