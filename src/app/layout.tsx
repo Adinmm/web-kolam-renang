@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Sonic Swimming Club adalah klub renang profesional di Deli Serdang & Medan. Melayani kursus renang anak dan dewasa dengan pelatih bersertifikat di Kenangan, Percut Sei Tuan.",
+    "Sonic Swimming Club merupakan klub renang profesional yang berlokasi di Deli Serdang dan Medan, menyediakan program kursus renang untuk anak-anak maupun dewasa. Didukung oleh pelatih bersertifikat dan berpengalaman, Sonic Swimming Club berkomitmen memberikan pembelajaran renang yang aman, efektif, dan berkualitas. Kegiatan latihan dilaksanakan di Kenangan, Percut Sei Tuan, dengan metode pelatihan yang terstruktur dan berorientasi pada perkembangan kemampuan peserta.",
 
   keywords: [
     "kursus renang Deli Serdang",
