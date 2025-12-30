@@ -89,17 +89,20 @@ const ProgramsSection = () => {
                 </div>
 
                 {/* Features */}
-                <ul className="space-y-2 pt-2">
-                  {program.class_items?.map((feature: string, idx: number) => (
-                    <li
-                      key={idx}
-                      className="flex items-center gap-2 text-sm text-muted-foreground"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                      <span className="line-clamp-1">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+          <ul className="space-y-2 pt-2">
+  {program.class_items?.map((feature: string, idx: number) => (
+    <li
+      key={idx}
+      className="flex items-start gap-2 text-sm text-muted-foreground"
+    >
+      <span className="w-1.5 h-1.5 mt-2 rounded-full bg-accent shrink-0" />
+      <span className="whitespace-normal break-words">
+        {feature}
+      </span>
+    </li>
+  ))}
+</ul>
+
 
                 {/* Button - always bottom */}
                 <Button

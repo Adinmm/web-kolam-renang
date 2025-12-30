@@ -1,5 +1,7 @@
 import { axiosInstance } from "@/lib/axiosInstance";
 import {
+  ClassModel,
+  ClassSchema,
   ContactInformationModel,
   contactInformationSchema,
   UserModel,
@@ -70,5 +72,35 @@ export const useUpdateUser = (id: string) => {
   return {
     form,
     mutation,
+  };
+};
+
+const updateClass = async (idClass: string, data: ClassModel) => {
+  const { id, ...rest } = data;
+  const response = await axiosInstance.patch(`/class/${idClass}`, rest, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
+export const useUpdateClass = () => {
+  const form = useForm({
+    resolver: zodResolver(ClassSchema),
+  });
+  const mutation = useMutation({
+    mutationKey: ["update_class"],
+    mutationFn: (data: any) => updateClass(data.id, data),
+    onSuccess: () => {
+      alert("update successfully");
+      window.location.reload();
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  return {
+    updateClassForm: form,
+    updateClassMutation: mutation,
   };
 };

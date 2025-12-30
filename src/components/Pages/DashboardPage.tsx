@@ -65,6 +65,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
+import { ClassEdit } from "../others/ClassEdit";
 
 export default function DashboardPage() {
   const [idContact, setIdContact] = useState("");
@@ -551,20 +552,21 @@ export default function DashboardPage() {
                           {k.description}
                         </p>
 
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {k.class_items?.map((item, idx) => (
-                            <Badge
-                              key={idx}
-                              variant="outline"
-                              className="text-xs"
-                            >
-                              {item}
-                            </Badge>
-                          ))}
-                        </div>
+                    <div className="flex flex-wrap gap-1 mb-4">
+  {k.class_items?.map((item, idx) => (
+    <Badge
+      key={idx}
+      variant="outline"
+      className="text-xs max-w-full whitespace-normal wrap-break-word text-left"
+    >
+      {item}
+    </Badge>
+  ))}
+</div>
+
 
                         {/* FOOTER BUTTON — SELALU DI BAWAH */}
-                        <div className="mt-auto pt-4">
+                        <div className="mt-auto pt-4 flex gap-2 w-full justify-center">
                           <Alert
                             ondelete={() => deleteClassHandler(k.id || "")}
                             buttonProps={
@@ -577,6 +579,20 @@ export default function DashboardPage() {
                                 Hapus
                               </Button>
                             }
+                          />
+                          <ClassEdit
+                            buttonProps={
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="w-full"
+                              >
+                                <Pencil className="w-4 h-4 mr-2" />
+                                Edit
+                              </Button>
+                            }
+                            idClass={k.id || ""}
+                            value={k}
                           />
                         </div>
                       </CardContent>
