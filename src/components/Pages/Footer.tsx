@@ -103,18 +103,21 @@ const Footer = () => {
             <h3 className="font-display font-semibold text-lg mb-4">
               Program Kami
             </h3>
-            <ul className="space-y-3">
-              {classes?.data?.data?.map((program, i) => (
-                <li key={i}>
-                  <a
-                    href="#program"
-                    className="text-primary-foreground/70 hover:text-accent transition-colors text-sm"
-                  >
-                    {program.class_name}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <ul className="space-y-3">
+  {classes?.data?.data
+    ?.slice(0, 5)
+    .map((program, i) => (
+      <li key={program.id ?? i}>
+        <a
+          href="#program"
+          className="text-primary-foreground/70 hover:text-accent transition-colors text-sm"
+        >
+          {program.class_name}
+        </a>
+      </li>
+    ))}
+</ul>
+
           </div>
 
           {/* Contact */}
